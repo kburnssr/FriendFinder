@@ -8,13 +8,23 @@ var connection = mysql.createConnection({
   });
 module.exports = function(app){
     app.get("/api/friends", function(req,res){    
-        var q = 'SELECT f.name, f.picture_link AS photo, group_concat(s.score) AS scores FROM friends f LEFT JOIN scores s ON s.friend_id = f.id GROUP BY f.id';
+        var q = 'SELECT * FROM friends';
         connection.query(q, function(err, result) {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(result.map(function(o){
-                o.scores = o.scores.split(",");
-                return o;
-            })));
+            console.log(result);
+            res.json(result);
+//            res.writeHead(200, { 'Content-Type': 'application/json' });
+//            res.end(JSON.stringify(result.map(function(o){
+//                o.scores = o.scores.split(",");
+ //               console.log(o);
+ //               return o;
+ //           })));
+        });
+    })
+    app.post("/api/friends",function(req,res){
+        var query = "INSERT INTO friends (name, picture_link, scores) VALUES(?, ?, ?);";
+        connection.query(query,[req.body.name, req.body.photo, req.body.scores], function(err, result){
+            console.log(result);
+            res.json(result);
         });
     })
 }
