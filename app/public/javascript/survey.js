@@ -1,5 +1,6 @@
 $(document).on("ready", function(){
     $("#submit").on("click",function(event){
+        console.log("click");
         event.preventDefault();
         var name = $("#name").val().trim();
         var photo = $("#photo").val().trim();
@@ -25,6 +26,13 @@ $(document).on("ready", function(){
             url: "/api/friends"
         }).then(function(result){
             console.log(result);
+            var currentFriendScore = q1 + q2 + q3 + q4 + q5 + q6 + q7 + q8 + q9 + q10;
+            $.ajax({
+                type: "GET",
+                url: "/api/friends"
+            }).then(function(results2){
+                console.log(results2);
+            })
         })
     })
 })
